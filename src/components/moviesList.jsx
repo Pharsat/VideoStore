@@ -1,16 +1,16 @@
 import React from "react";
 import MovieDetail from "./movieDetail";
 const MoviesList = props => {
-  const { movies, onDelete, onLike } = props;
+  const { movies, onDelete, onLike, onSort } = props;
 
   return (
     <table className="table">
       <thead>
         <tr>
-          <th>Tittle</th>
-          <th>Genre</th>
-          <th>Stock</th>
-          <th>Rate</th>
+          <th onClick={() => onSort("title")}>Tittle</th>
+          <th onClick={() => onSort("genre.name")}>Genre</th>
+          <th onClick={() => onSort("numberInStock")}>Stock</th>
+          <th onClick={() => onSort("dailyRentalRate")}>Rate</th>
           <th>Like</th>
           <th />
         </tr>

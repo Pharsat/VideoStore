@@ -5,6 +5,7 @@ import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
+import _ from "lodash";
 
 class Movies extends Component {
   state = {
@@ -12,11 +13,13 @@ class Movies extends Component {
     movies: [],
     currentPage: 1,
     pageSize: 4,
-    selectedGenre: {}
+    selectedGenre: {},
+    sortColumn: { path: "title", order: "asc" }
   };
+
   componentDidMount() {
     let movies = [...getMovies()];
-    let selectedGenre = { name: "All genres" };
+    let selectedGenre = { _id: "", name: "All genres" };
     let genres = [selectedGenre, ...getGenres()];
     this.setState({ movies, genres, selectedGenre });
   }
@@ -47,19 +50,43 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
+  handleSort = path => {
+    const sortColumn = { ...this.state.sortColumn };
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    this.setState({ sortColumn });
+  };
+
   render() {
-    const { pageSize, currentPage, movies, genres, selectedGenre } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      movies,
+      genres,
+      selectedGenre,
+      sortColumn
+    } = this.state;
 
     const filteredMovies =
       selectedGenre && selectedGenre._id
         ? movies.filter(m => m.genre._id === selectedGenre._id)
         : movies;
 
-    const { length: count } = filteredMovies;
+    const sorted = _.orderBy(
+      filteredMovies,
+      [sortColumn.path],
+      sortColumn.order
+    );
+
+    const { length: count } = sorted;
 
     if (count === 0) return <p>There are no movies in the database.</p>;
 
-    const paginatedMovies = paginate(filteredMovies, currentPage, pageSize);
+    const paginatedMovies = paginate(sorted, currentPage, pageSize);
 
     return (
       <main className="container">
@@ -79,6 +106,7 @@ class Movies extends Component {
               movies={paginatedMovies}
               onDelete={this.handleDelete}
               onLike={this.handleLike}
+              onSort={this.handleSort}
             />
           </div>
         </div>

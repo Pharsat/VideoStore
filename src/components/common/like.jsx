@@ -1,8 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Like = props => {
-  const { liked, callBackObject, onCallBack } = props;
+const Like = ({ liked, callBackObject, onCallBack }) => {
   return (
     <FontAwesomeIcon
       size="sm"

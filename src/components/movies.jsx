@@ -26,9 +26,7 @@ class Movies extends Component {
 
   handleDelete = movie => {
     this.setState({
-      movies: [...this.state.movies]
-        .filter(m => m._id !== movie._id)
-        .forEach(m => (m.liked = false))
+      movies: [...this.state.movies].filter(m => m._id !== movie._id)
     });
   };
 
@@ -54,32 +52,52 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
-  render() {
+  getFilteredMovies = (selectedGenre, movies) => {
+    return selectedGenre && selectedGenre._id
+      ? movies.filter(m => m.genre._id === selectedGenre._id)
+      : movies;
+  };
+
+  getSortedMovies = (filteredMovies, sortColumn) => {
+    return _.orderBy(filteredMovies, [sortColumn.path], sortColumn.order);
+  };
+
+  getPaginatedMovies = (sorted, currentPage, pageSize) => {
+    return paginate(sorted, currentPage, pageSize);
+  };
+
+  getPageData = () => {
     const {
       pageSize,
       currentPage,
       movies,
-      genres,
       selectedGenre,
       sortColumn
     } = this.state;
 
-    const filteredMovies =
-      selectedGenre && selectedGenre._id
-        ? movies.filter(m => m.genre._id === selectedGenre._id)
-        : movies;
-
-    const sorted = _.orderBy(
-      filteredMovies,
-      [sortColumn.path],
-      sortColumn.order
-    );
-
+    const filteredMovies = this.getFilteredMovies(selectedGenre, movies);
+    const sorted = this.getSortedMovies(filteredMovies, sortColumn);
     const { length: count } = sorted;
+    const paginatedMovies = this.getPaginatedMovies(
+      sorted,
+      currentPage,
+      pageSize
+    );
+    return { data: paginatedMovies, count };
+  };
+
+  render() {
+    const {
+      genres,
+      selectedGenre,
+      sortColumn,
+      pageSize,
+      currentPage
+    } = this.state;
+
+    const { count, data: movies } = this.getPageData();
 
     if (count === 0) return <p>There are no movies in the database.</p>;
-
-    const paginatedMovies = paginate(sorted, currentPage, pageSize);
 
     return (
       <main className="container">
@@ -96,7 +114,7 @@ class Movies extends Component {
           <div className="col" style={{ padding: "20px 0px 0px 0px" }}>
             <h1>Showing {count} movies in the database</h1>
             <MoviesList
-              movies={paginatedMovies}
+              movies={movies}
               sortColumn={sortColumn}
               onDelete={this.handleDelete}
               onLike={this.handleLike}

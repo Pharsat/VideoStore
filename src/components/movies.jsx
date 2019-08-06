@@ -100,7 +100,7 @@ class Movies extends Component {
     if (count === 0) return <p>There are no movies in the database.</p>;
 
     return (
-      <main className="container">
+      <React.Fragment>
         <div className="row">
           <div className="col col-2" style={{ padding: "20px 20px 0px 0px" }}>
             <ListGroup
@@ -133,7 +133,7 @@ class Movies extends Component {
             />
           </div>
         </div>
-      </main>
+      </React.Fragment>
     );
   }
 }

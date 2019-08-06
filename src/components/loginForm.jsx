@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 class LoginForm extends Component {
-  username = React.createRef();
+  state = { account: { username: "", password: "" } };
+  //   username = React.createRef();
 
   componentDidMount() {
     // this.username.current.focus();
@@ -9,10 +10,17 @@ class LoginForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     //Call server
-    let value = this.username.current.value;
+    // let value = this.username.current.value;
     console.log("submitted");
   };
+  handleChange = ({ currentTarget: input }) => {
+    const account = { ...this.state.account };
+    account[input.name] = input.value;
+    this.setState({ account });
+  };
+
   render() {
+    const { account } = this.state;
     return (
       <React.Fragment>
         <h1>Login</h1>
@@ -20,15 +28,18 @@ class LoginForm extends Component {
           <div className="form-group">
             <label htmlFor="userName">Username</label>
             <input
-              autoFocus
-              ref={this.username}
+              //   autoFocus
+              //   ref={this.username}
               type="text"
               className="form-control"
-              id="userName"
-              aria-describedby="userNameHelp"
+              id="username"
+              name="username"
+              aria-describedby="usernameHelp"
               placeholder="Enter username"
+              value={account.username}
+              onChange={this.handleChange}
             />
-            <small id="userNameHelp" className="form-text text-muted">
+            <small id="usernameHelp" className="form-text text-muted">
               We'll never share your username with anyone else.
             </small>
           </div>
@@ -37,8 +48,11 @@ class LoginForm extends Component {
             <input
               type="password"
               className="form-control"
+              name="password"
               id="password"
               placeholder="Password"
+              value={account.password}
+              onChange={this.handleChange}
             />
           </div>
           <button type="submit" className="btn btn-primary">

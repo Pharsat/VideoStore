@@ -1,20 +1,23 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-
-class LoginForm extends Form {
+class RegisterForm extends Form {
   state = {
-    data: { username: "", password: "" },
+    data: { username: "", password: "", name: "" },
     errors: {}
   };
 
   schema = {
     username: Joi.string()
+      .email()
       .required()
       .label("Username"),
     password: Joi.string()
       .required()
-      .label("Password")
+      .label("Password"),
+    name: Joi.string()
+      .required()
+      .label("Name")
   };
 
   doSubmit = () => {
@@ -26,26 +29,28 @@ class LoginForm extends Form {
   render() {
     return (
       <React.Fragment>
-        <h1>Login</h1>
+        <h1>Register</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput({
-            type: "text",
+            type: "email",
             name: "username",
-            label: "username",
-            placeholder: "Enter username",
-            description: "We'll never share your username with anyone else."
+            label: "Username"
           })}
           {this.renderInput({
             type: "password",
             name: "password",
-            label: "Password",
-            placeholder: "Enter password"
+            label: "Password"
+          })}{" "}
+          {this.renderInput({
+            type: "text",
+            name: "name",
+            label: "Name"
           })}
-          {this.renderButton("Login")}
+          {this.renderButton("Register")}
         </form>
       </React.Fragment>
     );
   }
 }
 
-export default LoginForm;
+export default RegisterForm;

@@ -112,6 +112,8 @@ class Movies extends Component {
             />
           </div>
           <div className="col" style={{ padding: "20px 0px 0px 0px" }}>
+            <Link className="btn btn-default" to="/movies/new" />
+
             <h1>Showing {count} movies in the database</h1>
             <MoviesList
               movies={movies}

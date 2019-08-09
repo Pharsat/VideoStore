@@ -12,7 +12,7 @@ const ListGroup = ({
         <li
           key={item[valueProp]}
           className={
-            item[valueProp] === selectedItem[valueProp]
+            selectedItem && item[valueProp] === selectedItem[valueProp]
               ? "list-group-item active"
               : "list-group-item"
           }

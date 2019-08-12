@@ -7,6 +7,7 @@ import NotFound from "./components/notFound";
 import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
+import { ToastContainer } from "react-toastify";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -14,12 +15,14 @@ import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 library.add(faHeart, faHeartRegular, faSortUp, faSortDown);
 
 function App() {
   return (
     <React.Fragment>
+      <ToastContainer />
       <NavBar />
       <div className="content">
         <main className="container">

@@ -42,7 +42,7 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
-    data[input.name] = input.value.trim();
+    data[input.name] = input.value;
 
     this.setState({ data, errors });
   };

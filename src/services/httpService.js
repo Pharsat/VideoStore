@@ -7,7 +7,7 @@ axios.interceptors.response.use(null, error => {
 
   console.log("interceptor called, this is first");
   const expectedError =
-    response && response.status >= 404 && response.status < 500;
+    response && response.status >= 400 && response.status < 500;
 
   if (!expectedError) {
     toast.error("an unexpected error");

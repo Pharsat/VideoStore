@@ -158,7 +158,6 @@ class Movies extends Component {
               onDelete={this.handleDelete}
               onLike={this.handleLike}
               onSort={this.handleSort}
-              user={user}
             />
           </div>
         </div>

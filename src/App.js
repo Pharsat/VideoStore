@@ -8,6 +8,7 @@ import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
 import RegisterForm from "./components/registerForm";
+import ProtectedRoute from "./components/common/protectedRoute";
 import { getCurrentUser } from "./services/authService";
 import { ToastContainer } from "react-toastify";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -29,7 +30,6 @@ class App extends Component {
   }
 
   render() {
-    const { user } = this.state;
     return (
       <React.Fragment>
         <ToastContainer />
@@ -39,12 +39,10 @@ class App extends Component {
             <Switch>
               <Route path="/login" component={LoginForm} />
               <Route path="/logout" component={Logout} />
-              <Route
+              <ProtectedRoute
                 path="/movies/:id"
-                render={props => {
-                  if (!user) return <Redirect to="/login" />;
-                  return <MovieForm {...props} />;
-                }}
+                user={this.state.user}
+                component={MovieForm}
               />
               <Route
                 path="/movies"
